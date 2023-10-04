@@ -40,11 +40,11 @@ jobs:
           fi
 
           # Copy rendered manifests.
-          cp /tmp/prometheus-umbrella.yml .
+          cp /tmp/prometheus-umbrella.yml . 
+          git add .
 
           # Push to env branch.
-          if ! git diff --quiet HEAD ; then 
-            git add .
+          if ! git diff --quiet HEAD ; then
             git commit -m "${{ github.event.head_commit.message }}"
             git push --set-upstream origin env/${{ matrix.env }}
           fi
