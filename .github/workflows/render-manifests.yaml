@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
      matrix:
-       env: [dev]
+       env: [dev,prod]
 
     steps:
       - uses: actions/checkout@v3
@@ -30,14 +30,9 @@ jobs:
           rm -rf Chart.lock charts/
 
       - name: Render Kustomize Manifests
-        working-directory: kustomize/overlays/dev
+        working-directory: kustomize/overlays/${{ matrix.env }}
         run: |
-          kustomize build ./ > /tmp/kustomize-dev.yaml
-
-      - name: Render Kustomize Manifests
-        working-directory: kustomize/overlays/prod
-        run: |
-          kustomize build ./ > /tmp/kustomize-prod.yaml
+          kustomize build ./ > /tmp/kustomize-${{ matrix.env }}.yaml
 
       - name: Deploy to ${{ matrix.env }}
         run: |
@@ -51,8 +46,7 @@ jobs:
 
           # Copy rendered manifests.
           cp /tmp/prometheus-umbrella.yml . 
-          cp /tmp/kustomize-dev.yaml . 
-          cp /tmp/kustomize-prod.yaml . 
+          cp /tmp/kustomize-${{ matrix.env }}.yaml . 
           git add .
 
           # Push to env branch.
