@@ -1,6 +1,6 @@
 prometheus:
   rbac:
-    create: false
+    create: true
   server:
     global:
       scrape_interval: 2000m
