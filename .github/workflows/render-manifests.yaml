@@ -32,11 +32,13 @@ jobs:
       - name: Deploy to ${{ matrix.env }}
         run: |
           # Create env branch if it doesn't exist.
-          if ! git checkout env/${{ matrix.env }} -- ; then
+          if ! git rev-parse --verify env/${{ matrix.env }} ; then
             git checkout --orphan env/${{ matrix.env }}
             git rm -rf .
             git commit --allow-empty -m "chore: create env/${{ matrix.env }} branch"
             git push --set-upstream origin env/${{ matrix.env }}
+          else
+            git checkout env/${{ matrix.env }}
           fi
 
           # Copy rendered manifests.
