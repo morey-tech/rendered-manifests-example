@@ -23,9 +23,10 @@ jobs:
       - uses: fregante/setup-git-user@v1
 
       - name: Render manifests
+        working-directory: helm/prometheus-umbrella
         run: |
           helm dependency build
-          helm template ./helm/prometheus-umbrella > /tmp/prometheus-umbrella.yml
+          helm template ./ > /tmp/prometheus-umbrella.yml
 
       - name: Deploy to ${{ matrix.env }}
         run: |
