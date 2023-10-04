@@ -46,7 +46,7 @@ jobs:
           fi
 
       - name: Push to env/${{ matrix.env }}
-        if: ${{ matrix.env }} == 'dev'
+        if: ${{ matrix.env == 'dev' }}
         run: |
 
           # Copy rendered manifests.
@@ -61,7 +61,7 @@ jobs:
           fi
       
       - name: Create PR for env/${{ matrix.env }}
-        if: ${{ matrix.env }} == 'prod'
+        if: ${{ matrix.env == 'prod' }}
         run: |
 
           git checkout -b promote-to-prod-${{ github.event.head_commit.id }}
