@@ -27,6 +27,7 @@ jobs:
         run: |
           helm dependency build
           helm template ./ > /tmp/prometheus-umbrella.yml
+          rm -rf Chart.lock charts/
 
       - name: Deploy to ${{ matrix.env }}
         run: |
