@@ -77,10 +77,10 @@ jobs:
           # Push to env branch.
           if ! git diff --quiet HEAD ; then
             git commit -m "${{ github.event.head_commit.message }}"
-            git push --set-upstream origin env/${{ matrix.env }}
+            git push --set-upstream origin promote-to-prod-${{ github.event.head_commit.id }}
             gh pr create \
               --title "chore(prod): promote to prod ${{ github.event.head_commit.id }}" \
               --body "promote to prod ${{ github.event.head_commit.id }}" \
-              --base main \
+              --base env/${{ matrix.env }} \
               --head promote-to-prod-${{ github.event.head_commit.id }}
           fi
