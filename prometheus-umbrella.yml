@@ -637,6 +637,76 @@ rules:
     - volumeattachments
   verbs: ["list", "watch"]
 ---
+# Source: create/charts/prometheus/templates/alertmanager/clusterrole.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    component: "alertmanager"
+    app: prometheus
+    release: release-name
+    chart: prometheus-15.7.1
+    heritage: Helm
+  name: release-name-prometheus-alertmanager
+rules:
+  []
+---
+# Source: create/charts/prometheus/templates/pushgateway/clusterrole.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    component: "pushgateway"
+    app: prometheus
+    release: release-name
+    chart: prometheus-15.7.1
+    heritage: Helm
+  name: release-name-prometheus-pushgateway
+rules:
+  []
+---
+# Source: create/charts/prometheus/templates/server/clusterrole.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    component: "server"
+    app: prometheus
+    release: release-name
+    chart: prometheus-15.7.1
+    heritage: Helm
+  name: release-name-prometheus-server
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - nodes
+      - nodes/proxy
+      - nodes/metrics
+      - services
+      - endpoints
+      - pods
+      - ingresses
+      - configmaps
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - "extensions"
+      - "networking.k8s.io"
+    resources:
+      - ingresses/status
+      - ingresses
+    verbs:
+      - get
+      - list
+      - watch
+  - nonResourceURLs:
+      - "/metrics"
+    verbs:
+      - get
+---
 # Source: create/charts/prometheus/charts/kube-state-metrics/templates/clusterrolebinding.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -658,6 +728,66 @@ subjects:
 - kind: ServiceAccount
   name: release-name-kube-state-metrics
   namespace: default
+---
+# Source: create/charts/prometheus/templates/alertmanager/clusterrolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    component: "alertmanager"
+    app: prometheus
+    release: release-name
+    chart: prometheus-15.7.1
+    heritage: Helm
+  name: release-name-prometheus-alertmanager
+subjects:
+  - kind: ServiceAccount
+    name: release-name-prometheus-alertmanager
+    namespace: default
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: release-name-prometheus-alertmanager
+---
+# Source: create/charts/prometheus/templates/pushgateway/clusterrolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    component: "pushgateway"
+    app: prometheus
+    release: release-name
+    chart: prometheus-15.7.1
+    heritage: Helm
+  name: release-name-prometheus-pushgateway
+subjects:
+  - kind: ServiceAccount
+    name: release-name-prometheus-pushgateway
+    namespace: default
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: release-name-prometheus-pushgateway
+---
+# Source: create/charts/prometheus/templates/server/clusterrolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    component: "server"
+    app: prometheus
+    release: release-name
+    chart: prometheus-15.7.1
+    heritage: Helm
+  name: release-name-prometheus-server
+subjects:
+  - kind: ServiceAccount
+    name: release-name-prometheus-server
+    namespace: default
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: release-name-prometheus-server
 ---
 # Source: create/charts/prometheus/charts/kube-state-metrics/templates/service.yaml
 apiVersion: v1
