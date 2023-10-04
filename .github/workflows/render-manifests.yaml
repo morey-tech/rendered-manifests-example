@@ -11,9 +11,9 @@ jobs:
   render-manifests:
     name: Render manifests
     runs-on: ubuntu-latest
-    # strategy:
-    #  matrix:
-    #    env: [dev, stage, prod]
+    strategy:
+     matrix:
+       env: [dev]
 
     steps:
       - uses: actions/checkout@v3
@@ -26,12 +26,23 @@ jobs:
         working-directory: helm/prometheus-umbrella
         run: |
           helm dependency build
-          helm template ./ > prometheus-umbrella.yml
+          helm template ./ > /tmp/prometheus-umbrella.yml
 
-      - name: Deploy to dev
+          if ! git checkout env/${{ matrix.env }} -- ; then
+            git checkout --orphan env/${{ matrix.env }}
+            git rm -rf .
+            cp /tmp/prometheus-umbrella.yml .
+            git add .
+            git commit -m "${{ github.event.head_commit.message }}"
+            git push --set-upstream origin env/${{ matrix.env }}
+          else
+            cp /tmp/prometheus-umbrella.yml .
+          fi 
+
+      - name: Deploy to ${{ matrix.env }}
         run: |
           if ! git diff --quiet HEAD ; then 
             git add .
             git commit -m "${{ github.event.head_commit.message }}"
-            git push --set-upstream origin env/dev
+            git push --set-upstream origin env/${{ matrix.env }}
           fi
