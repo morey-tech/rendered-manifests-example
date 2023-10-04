@@ -22,12 +22,22 @@ jobs:
           fetch-depth: 0  # needed to get all branches
       - uses: fregante/setup-git-user@v1
 
-      - name: Render manifests
+      - name: Render Helm Manifests
         working-directory: helm/prometheus-umbrella
         run: |
           helm dependency build
           helm template ./ > /tmp/prometheus-umbrella.yml
           rm -rf Chart.lock charts/
+
+      - name: Render Kustomize Manifests
+        working-directory: kustomize/overlays/dev
+        run: |
+          kustomize build ./ > /tmp/kustomize-dev.yaml
+
+      - name: Render Kustomize Manifests
+        working-directory: kustomize/overlays/prod
+        run: |
+          kustomize build ./ > /tmp/kustomize-prod.yaml
 
       - name: Deploy to ${{ matrix.env }}
         run: |
@@ -41,6 +51,8 @@ jobs:
 
           # Copy rendered manifests.
           cp /tmp/prometheus-umbrella.yml . 
+          cp /tmp/kustomize-dev.yaml . 
+          cp /tmp/kustomize-prod.yaml . 
           git add .
 
           # Push to env branch.
