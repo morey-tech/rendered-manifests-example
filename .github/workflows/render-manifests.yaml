@@ -77,7 +77,9 @@ jobs:
           if ! git diff --quiet HEAD ; then
             git commit -m "${{ github.event.head_commit.message }}"
             git push --set-upstream origin env/${{ matrix.env }}
-            gh pr create --title "chore(prod): promote to prod ${{ github.event.head_commit.id }}" \
+            gh pr create \
+              --title "chore(prod): promote to prod ${{ github.event.head_commit.id }}" \
+              --body "promote to prod ${{ github.event.head_commit.id }}" \
               --base main \
               --head promote-to-prod-${{ github.event.head_commit.id }}
           fi
