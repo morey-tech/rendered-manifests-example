@@ -18,4 +18,9 @@ spec:
       containers:
       - image: christianh814/gobg:latest
         name: gobg
-        resources: {}
+        resources:
+          requests:
+            cpu: 200m
+            memory: 512MiB
+          limits:
+            memory: 512MiB
