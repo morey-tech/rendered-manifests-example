@@ -31,13 +31,18 @@ jobs:
 
       - name: Deploy to ${{ matrix.env }}
         run: |
+          # Create env branch if it doesn't exist.
           if ! git checkout env/${{ matrix.env }} -- ; then
             git checkout --orphan env/${{ matrix.env }}
             git rm -rf .
+            git commit --allow-empty -m "chore: create env/${{ matrix.env }} branch"
+            git push --set-upstream origin env/${{ matrix.env }}
           fi
 
+          # Copy rendered manifests.
           cp /tmp/prometheus-umbrella.yml .
 
+          # Push to env branch.
           if ! git diff --quiet HEAD ; then 
             git add .
             git commit -m "${{ github.event.head_commit.message }}"
