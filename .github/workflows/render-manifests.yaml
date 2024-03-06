@@ -14,8 +14,9 @@ jobs:
     name: Render `dev` manifests
     runs-on: ubuntu-latest
     steps:
-    - run: id
-    - run: sudo mkdir -p /github/home/.config && sudo chown -R runner /github/home/ && ls -ld /github/home && ls -la /github/home
+    - uses: actions/checkout@v4
+    # - run: id
+    # - run: sudo mkdir -p /github/home/.config && sudo chown -R runner /github/home/ && ls -ld /github/home && ls -la /github/home
     - name: Render manifests
       uses: akuity/kargo-render-action@v0.1.0-rc.35
       with:
