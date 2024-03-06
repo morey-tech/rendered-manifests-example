@@ -14,7 +14,7 @@ branchConfigs:
           releaseName: prometheus
           namespace: prometheus
           valueFiles:
-          - helm/prometheus-umbrella/values-dev.yaml
+          - values-dev.yaml
       outputPath: prometheus
 
 - name: env/prod
@@ -31,5 +31,5 @@ branchConfigs:
           releaseName: prometheus
           namespace: prometheus
           valueFiles:
-          - helm/prometheus-umbrella/values-prod.yaml
+          - values-prod.yaml
       outputPath: prometheus
