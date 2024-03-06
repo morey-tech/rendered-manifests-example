@@ -18,6 +18,8 @@ branchConfigs:
       outputPath: prometheus
 
 - name: env/prod
+  prs:
+    enabled: true
   appConfigs:
     kustomize-example:
       configManagement:
