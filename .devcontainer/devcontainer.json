@@ -1,34 +1,28 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/kubernetes-helm-minikube
 {
-	"name": "Kubernetes - Minikube-in-Docker",
-	"dockerFile": "Dockerfile",
-	"runArgs": ["--privileged"],
-	"mounts": [
-		"source=minikube-var-lib-docker,target=/var/lib/docker,type=volume",
-		"source=minikube-config,target=/home/vscode/.minikube,type=volume"
-	],
-	"overrideCommand": false,
-
-	// Configure tool-specific properties.
-	"customizations": {
-		// Configure properties specific to VS Code.
-		"vscode": {
-			// Add the IDs of extensions you want installed when the container is created.
-			"extensions": [
-				"ms-azuretools.vscode-docker",
-				"ms-kubernetes-tools.vscode-kubernetes-tools"
-			]
-		}
+	"name": "rendered-manifests-example",
+	// Use a Dockerfile or Docker Compose file.
+	// https://containers.dev/guide/dockerfile
+	"build": {
+		"dockerfile": "Dockerfile"
 	},
 
-	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// "forwardPorts": [],
+	"features": {
+		"ghcr.io/devcontainers/features/docker-in-docker:2": {
+			"enableNonRootDocker": "true",
+			"moby": "true"
+		}
+	},
+	
+	"hostRequirements": {
+		"cpus": 4
+	},
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "kubectl version",
+	"postCreateCommand": "/bin/bash -c .devcontainer/post-create.sh",
 
 	// Use 'postStartCommand' to run commands after the container is created like starting minikube.
-	// "postStartCommand": "nohup bash -c 'minikube start &' > minikube.log 2>&1",
+	"postStartCommand": "/bin/bash -c .devcontainer/post-start.sh",
 
-	// Minikube does not like running as root, so use a non-root user.
-	"remoteUser": "vscode"
 }

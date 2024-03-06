@@ -1,33 +1,33 @@
-# Note: You can use any Debian/Ubuntu based image you want. 
-FROM mcr.microsoft.com/vscode/devcontainers/base:0-bullseye
+# See here for image contents: https://github.com/microsoft/vscode-dev-containers/tree/v0.245.2/containers/ubuntu/.devcontainer/base.Dockerfile
+FROM mcr.microsoft.com/vscode/devcontainers/base:0-ubuntu-22.04
 
-# Enable new "BUILDKIT" mode for Docker CLI
-ENV DOCKER_BUILDKIT=1
+# Select desired TAG from https://github.com/argoproj/argo-cd/releases
+ENV ARGOCD_VERSION=v2.9.3
+RUN curl -sSL -o /usr/local/bin/argocd "https://github.com/argoproj/argo-cd/releases/download/${ARGOCD_VERSION}/argocd-linux-amd64" \
+    && chmod +x /usr/local/bin/argocd
 
-# Options
-ARG INSTALL_ZSH="true"
-ARG UPGRADE_PACKAGES="false"
-ARG USE_MOBY="true"
-ARG USERNAME=vscode
-ARG USER_UID=1000
-ARG USER_GID=$USER_UID
-# Install needed packages and setup non-root user. Use a separate RUN statement to add your own dependencies.
-COPY library-scripts/*.sh /tmp/library-scripts/
-RUN apt-get update && /bin/bash /tmp/library-scripts/common-debian.sh "${INSTALL_ZSH}" "${USERNAME}" "${USER_UID}" "${USER_GID}" "${UPGRADE_PACKAGES}" "true" "true" \
-    && /bin/bash /tmp/library-scripts/docker-in-docker-debian.sh "true" "${USERNAME}" "${USE_MOBY}" \ 
-    && /bin/bash /tmp/library-scripts/kubectl-helm-debian.sh "latest" "latest" "latest" \
-    && mkdir -p /home/${USERNAME}/.minikube \
-    && chown ${USERNAME} /home/${USERNAME}/.minikube \
-    && apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/library-scripts/
+ENV AKUITY_VERSION=v0.9.5
+RUN curl -sSL -o /usr/local/bin/akuity "https://dl.akuity.io/akuity-cli/${AKUITY_VERSION}/linux/amd64/akuity" \
+    && chmod +x /usr/local/bin/akuity
 
-VOLUME [ "/var/lib/docker" ]
+ENV KIND_VERSION=v0.20.0
+RUN curl -Lo /usr/local/bin/kind https://kind.sigs.k8s.io/dl/${KIND_VERSION}/kind-linux-amd64 \
+    && chmod +x /usr/local/bin/kind
 
-# Setting the ENTRYPOINT to docker-init.sh will start up the Docker Engine 
-# inside the container "overrideCommand": false is set in devcontainer.json. 
-# The script will also execute CMD if you need to alter startup behaviors.
-ENTRYPOINT [ "/usr/local/share/docker-init.sh" ]
-CMD [ "sleep", "infinity" ]
+# Same K8s version that kind creates.
+ENV KUBECTL_VERSION=v1.27.3
+RUN curl -Lo /usr/local/bin/kubectl "https://dl.k8s.io/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl" \
+    && chmod +x /usr/local/bin/kubectl
 
-# [Optional] Uncomment this section to install additional OS packages.
-# RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-#     && apt-get -y install --no-install-recommends <your-package-list-here>
+# https://github.com/kubernetes-sigs/kustomize/releases
+ENV KUSTOMIZE_VERSION=v5.3.0
+RUN curl -Lo /tmp/kustomize.tar.gz https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2F${KUSTOMIZE_VERSION}/kustomize_${KUSTOMIZE_VERSION}_linux_amd64.tar.gz \
+    && tar -xvf /tmp/kustomize.tar.gz -C /tmp \
+    && mv /tmp/kustomize /usr/local/bin/kustomize \
+    && chmod +x /usr/local/bin/kustomize
+
+ENV HELM_VERSION=3.13.1
+RUN curl -LO "https://get.helm.sh/helm-v${HELM_VERSION}-linux-amd64.tar.gz" \
+    && tar -zxvf "helm-v${HELM_VERSION}-linux-amd64.tar.gz" \
+    && mv linux-amd64/helm /usr/local/bin/ \
+    && rm -rf "helm-v${HELM_VERSION}-linux-amd64.tar.gz" linux-amd64
