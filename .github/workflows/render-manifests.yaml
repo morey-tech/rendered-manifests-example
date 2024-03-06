@@ -14,7 +14,7 @@ jobs:
     name: Render `dev` manifests
     runs-on: ubuntu-latest
     steps:
-    - run: whoami && group
+    - run: id
     - run: sudo mkdir -p /github/home/.config && sudo chown -R runner && ls -dv /github/home
     - name: Render manifests
       uses: akuity/kargo-render-action@v0.1.0-rc.35
