@@ -22,6 +22,8 @@ jobs:
         targetBranch: env/dev
       env:
         XDG_CONFIG_HOME: /tmp
+        XDG_CACHE_HOME: /tmp
+        XDG_DATA_HOME: /tmp
   # render-manifests:
   #   name: Render manifests
   #   runs-on: ubuntu-latest
