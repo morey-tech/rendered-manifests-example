@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: gobg
+  name: gobg
+spec:
+  replicas: 20
+  selector:
+    matchLabels:
+      app: gobg
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: gobg
+    spec:
+      containers:
+      - image: christianh814/gobg:latest
+        name: gobg
+        resources:
+          limits:
+            memory: 512MiB
+          requests:
+            cpu: 200m
+            memory: 512MiB
