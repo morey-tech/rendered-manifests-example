@@ -10,6 +10,15 @@ permissions:
   pull-requests: write
 
 jobs:
+  render-dev-manifests:
+    name: Render `dev` manifests
+    runs-on: ubuntu-latest
+    steps:
+    - name: Render manifests
+      uses: akuity/kargo-render-action@v0.1.0-rc.35
+      with:
+        personalAccessToken: ${{ secrets.GITHUB_TOKEN }}
+        targetBranch: env/dev
   # render-manifests:
   #   name: Render manifests
   #   runs-on: ubuntu-latest
@@ -85,12 +94,3 @@ jobs:
   #             --base env/${{ matrix.env }} \
   #             --head promote-to-prod-${{ github.event.head_commit.id }}
   #         fi
-  render-dev-manifests:
-    name: Render test manifests
-    runs-on: ubuntu-latest
-    steps:
-    - name: Render manifests
-      uses: akuity/kargo-render-action@v0.1.0-rc.34
-      with:
-        personalAccessToken: ${{ secrets.GITHUB_TOKEN }}
-        targetBranch: env/test
