@@ -1,0 +1,35 @@
+configVersion: v1alpha1
+branchConfigs:
+- name: env/dev
+  appConfigs:
+    kustomize-example:
+      configManagement:
+        path: kustomize/overlays/dev
+      outputPath: kustomize-example
+    
+    prometheus:
+      configManagement:
+        path: helm/prometheus-umbrella
+        helm:
+          releaseName: prometheus
+          namespace: prometheus
+          valueFiles:
+          - helm/prometheus-umbrella/values-dev.yaml
+      outputPath: prometheus
+
+- name: env/prod
+  appConfigs:
+    kustomize-example:
+      configManagement:
+        path: kustomize/overlays/prod
+      outputPath: kustomize-example
+    
+    prometheus:
+      configManagement:
+        path: helm/prometheus-umbrella
+        helm:
+          releaseName: prometheus
+          namespace: prometheus
+          valueFiles:
+          - helm/prometheus-umbrella/values-prod.yaml
+      outputPath: prometheus
