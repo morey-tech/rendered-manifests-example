@@ -20,6 +20,8 @@ jobs:
       with:
         personalAccessToken: ${{ secrets.GITHUB_TOKEN }}
         targetBranch: env/dev
+      env:
+        XDG_CONFIG_HOME: /tmp
   # render-manifests:
   #   name: Render manifests
   #   runs-on: ubuntu-latest
