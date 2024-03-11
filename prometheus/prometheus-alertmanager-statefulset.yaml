@@ -5,11 +5,12 @@ metadata:
     app.kubernetes.io/instance: prometheus
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: alertmanager
-    app.kubernetes.io/version: v0.26.0
-    helm.sh/chart: alertmanager-1.6.0
+    app.kubernetes.io/version: v0.27.0
+    helm.sh/chart: alertmanager-1.9.0
   name: prometheus-alertmanager
   namespace: prometheus
 spec:
+  minReadySeconds: 0
   replicas: 1
   revisionHistoryLimit: 10
   selector:
@@ -20,7 +21,7 @@ spec:
   template:
     metadata:
       annotations:
-        checksum/config: fa64bf4f2216692a40b53773bb8083f3d02c3150c5c957923e1fd5051e579939
+        checksum/config: 8f121eda9e31790fe5f8d6117168c7462ad614518e955bd24154dbe33740ced6
       labels:
         app.kubernetes.io/instance: prometheus
         app.kubernetes.io/name: alertmanager
@@ -36,7 +37,7 @@ spec:
             fieldRef:
               apiVersion: v1
               fieldPath: status.podIP
-        image: quay.io/prometheus/alertmanager:v0.26.0
+        image: quay.io/prometheus/alertmanager:v0.27.0
         imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:

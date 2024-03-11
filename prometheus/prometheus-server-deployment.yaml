@@ -7,8 +7,8 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: prometheus
     app.kubernetes.io/part-of: prometheus
-    app.kubernetes.io/version: v2.47.0
-    helm.sh/chart: prometheus-25.0.0
+    app.kubernetes.io/version: v2.50.1
+    helm.sh/chart: prometheus-25.17.0
   name: prometheus-server
   namespace: prometheus
 spec:
@@ -30,18 +30,17 @@ spec:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: prometheus
         app.kubernetes.io/part-of: prometheus
-        app.kubernetes.io/version: v2.47.0
+        app.kubernetes.io/version: v2.50.1
         dc: label-from-values-file
-        helm.sh/chart: prometheus-25.0.0
+        helm.sh/chart: prometheus-25.17.0
     spec:
       containers:
       - args:
         - --watched-dir=/etc/config
         - --reload-url=http://127.0.0.1:9090/-/reload
-        image: quay.io/prometheus-operator/prometheus-config-reloader:v0.67.0
+        image: quay.io/prometheus-operator/prometheus-config-reloader:v0.71.2
         imagePullPolicy: IfNotPresent
         name: prometheus-server-configmap-reload
-        resources: {}
         volumeMounts:
         - mountPath: /etc/config
           name: config-volume
@@ -53,7 +52,7 @@ spec:
         - --web.console.libraries=/etc/prometheus/console_libraries
         - --web.console.templates=/etc/prometheus/consoles
         - --web.enable-lifecycle
-        image: quay.io/akuity/akuity:v2.47.0
+        image: quay.io/akuity/akuity:v2.50.1
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 3
@@ -78,7 +77,6 @@ spec:
           periodSeconds: 5
           successThreshold: 1
           timeoutSeconds: 4
-        resources: {}
         volumeMounts:
         - mountPath: /etc/config
           name: config-volume
