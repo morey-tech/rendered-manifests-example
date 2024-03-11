@@ -369,7 +369,7 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: prometheus
     app.kubernetes.io/part-of: prometheus
-    app.kubernetes.io/version: v2.47.0
-    helm.sh/chart: prometheus-25.0.0
+    app.kubernetes.io/version: v2.50.1
+    helm.sh/chart: prometheus-25.17.0
   name: prometheus-server
   namespace: prometheus
