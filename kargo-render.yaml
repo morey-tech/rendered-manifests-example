@@ -2,36 +2,36 @@ configVersion: v1alpha1
 branchConfigs:
 - name: env/dev
   appConfigs:
-    kustomize-example:
+    backend:
       configManagement:
-        path: kustomize/overlays/dev
-      outputPath: kustomize-example
+        path: backend/overlays/dev
+      outputPath: backend
     
-    prometheus:
+    frontend:
       configManagement:
-        path: helm/prometheus-umbrella
+        path: frontend/
         helm:
-          releaseName: prometheus
-          namespace: prometheus
+          releaseName: frontend
+          namespace: frontend
           valueFiles:
           - values-dev.yaml
-      outputPath: prometheus
+      outputPath: frontend/
 
 - name: env/prod
   prs:
     enabled: true
   appConfigs:
-    kustomize-example:
+    backend:
       configManagement:
-        path: kustomize/overlays/prod
-      outputPath: kustomize-example
+        path: backend/overlays/prod
+      outputPath: backend
     
-    prometheus:
+    frontend:
       configManagement:
-        path: helm/prometheus-umbrella
+        path: frontend/
         helm:
-          releaseName: prometheus
-          namespace: prometheus
+          releaseName: frontend
+          namespace: frontend
           valueFiles:
-          - values-prod.yaml
-      outputPath: prometheus
+          - values-prd.yaml
+      outputPath: frontend/
