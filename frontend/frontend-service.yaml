@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: frontend
+    chart: frontend-0.1.0
+    heritage: Helm
+    release: frontend
+  name: frontend
+spec:
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: http
+  selector:
+    app: frontend
+    release: frontend
+  type: LoadBalancer
