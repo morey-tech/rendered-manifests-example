@@ -3,7 +3,6 @@ on:
   push:
     branches:
       - main
-      - kargo-render-refactor
 
 permissions: 
   contents: write
