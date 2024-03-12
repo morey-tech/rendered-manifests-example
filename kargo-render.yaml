@@ -17,13 +17,13 @@ branchConfigs:
           - values-dev.yaml
       outputPath: frontend/
 
-- name: env/prod
+- name: env/prd
   prs:
     enabled: true
   appConfigs:
     backend:
       configManagement:
-        path: backend/overlays/prod
+        path: backend/overlays/prd
       outputPath: backend
     
     frontend:
