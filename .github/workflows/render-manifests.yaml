@@ -26,11 +26,11 @@ jobs:
         targetBranch: env/dev
   
   render-prod-manifests:
-    name: Render `prod` manifests
+    name: Render `prd` manifests
     runs-on: ubuntu-latest
     steps:
     - name: Render manifests
       uses: akuity/kargo-render-action@v0.1.0-rc.35
       with:
         personalAccessToken: ${{ secrets.GITHUB_TOKEN }}
-        targetBranch: env/prod
+        targetBranch: env/prd
