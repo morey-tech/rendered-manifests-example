@@ -1,31 +1,12 @@
 configVersion: v1alpha1
 branchConfigs:
-- name: env/dev
+- pattern: env/(\w+)
   appConfigs:
     backend:
       configManagement:
-        path: backend/overlays/dev
+        path: backend/overlays/${1}
       outputPath: backend
-    
-    frontend:
-      configManagement:
-        path: frontend/
-        helm:
-          releaseName: frontend
-          namespace: frontend
-          valueFiles:
-          - values-dev.yaml
-      outputPath: frontend/
 
-- name: env/prd
-  prs:
-    enabled: true
-  appConfigs:
-    backend:
-      configManagement:
-        path: backend/overlays/prd
-      outputPath: backend
-    
     frontend:
       configManagement:
         path: frontend/
@@ -33,5 +14,5 @@ branchConfigs:
           releaseName: frontend
           namespace: frontend
           valueFiles:
-          - values-prd.yaml
+          - values-${1}.yaml
       outputPath: frontend/

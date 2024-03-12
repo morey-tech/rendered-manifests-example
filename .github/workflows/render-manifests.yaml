@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+      - 9-kargo-render-pattern  # for testing in PR
 
 permissions: 
   contents: write
@@ -33,4 +34,4 @@ jobs:
       uses: akuity/kargo-render-action@v0.1.0-rc.35
       with:
         personalAccessToken: ${{ secrets.GITHUB_TOKEN }}
-        targetBranch: env/prod
+        targetBranch: env/prd
