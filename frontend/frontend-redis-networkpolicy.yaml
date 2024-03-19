@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  labels:
+    app.kubernetes.io/instance: frontend
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: redis
+    app.kubernetes.io/version: 7.2.4
+    helm.sh/chart: redis-19.0.0
+  name: frontend-redis
+  namespace: frontend
+spec:
+  egress:
+  - {}
+  ingress:
+  - ports:
+    - port: 6379
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/instance: frontend
+      app.kubernetes.io/name: redis
+  policyTypes:
+  - Ingress
+  - Egress
