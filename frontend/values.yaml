@@ -9,11 +9,11 @@ image:
   tag: 0.1
   pullPolicy: IfNotPresent
 
-containerPort: 80
+containerPort: 8080
 
 service:
   type: ClusterIP
-  port: 80
+  # port: 80
 
 ingress:
   enabled: false
