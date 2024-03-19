@@ -23,7 +23,7 @@ spec:
         checksum/configmap: 86bcc953bb473748a3d3dc60b7c11f34e60c93519234d4c37f42e22ada559d47
         checksum/health: aff24913d801436ea469d8d374b2ddb3ec4c43ee7ab24663d5f8ff1a1b6991a9
         checksum/scripts: 84151e7423cc7aedc1d0d3b311b48e1cfc8e2253829e9f6485d3cce4808b4bfd
-        checksum/secret: 70135e2f232cb1f54e2a138e836d35d1423f5fc7f3f4f2bbf1a57d1a0aa00ba9
+        checksum/secret: da39ce361da6f1c8253b443ae2e04b96ef8af6f0b2cbdcacb07eb5f4ad36fffb
       labels:
         app.kubernetes.io/component: replica
         app.kubernetes.io/instance: frontend
