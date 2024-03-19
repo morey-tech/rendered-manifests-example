@@ -100,6 +100,6 @@ metadata:
     app.kubernetes.io/instance: frontend
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: redis
-    helm.sh/chart: redis-18.0.0
+    helm.sh/chart: redis-18.0.1
   name: frontend-redis-health
   namespace: frontend
