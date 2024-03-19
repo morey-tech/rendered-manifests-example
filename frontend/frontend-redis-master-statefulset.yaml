@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/instance: frontend
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: redis
-    helm.sh/chart: redis-18.0.0
+    helm.sh/chart: redis-18.0.1
   name: frontend-redis-master
   namespace: frontend
 spec:
@@ -23,13 +23,13 @@ spec:
         checksum/configmap: 86bcc953bb473748a3d3dc60b7c11f34e60c93519234d4c37f42e22ada559d47
         checksum/health: aff24913d801436ea469d8d374b2ddb3ec4c43ee7ab24663d5f8ff1a1b6991a9
         checksum/scripts: 84151e7423cc7aedc1d0d3b311b48e1cfc8e2253829e9f6485d3cce4808b4bfd
-        checksum/secret: 26ad84ee7a1154124d1f8b0c1297bf99cceade416144546b6ba4ef1925edcf7f
+        checksum/secret: fa3d04cf6dbbbe9a779a3fd39e658924676c3916f1ce1d50310104242cc62487
       labels:
         app.kubernetes.io/component: master
         app.kubernetes.io/instance: frontend
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: redis
-        helm.sh/chart: redis-18.0.0
+        helm.sh/chart: redis-18.0.1
     spec:
       affinity:
         nodeAffinity: null
