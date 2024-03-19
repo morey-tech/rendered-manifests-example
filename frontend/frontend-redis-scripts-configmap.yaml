@@ -74,7 +74,6 @@ metadata:
     app.kubernetes.io/instance: frontend
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: redis
-    app.kubernetes.io/version: 7.2.4
-    helm.sh/chart: redis-19.0.0
+    helm.sh/chart: redis-18.0.1
   name: frontend-redis-scripts
   namespace: frontend
