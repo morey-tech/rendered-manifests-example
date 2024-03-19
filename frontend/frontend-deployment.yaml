@@ -29,7 +29,7 @@ spec:
             port: http
         name: frontend
         ports:
-        - containerPort: 8080
+        - containerPort: 80
           name: http
           protocol: TCP
         readinessProbe:
