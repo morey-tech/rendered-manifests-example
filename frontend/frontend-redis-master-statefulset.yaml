@@ -6,7 +6,8 @@ metadata:
     app.kubernetes.io/instance: frontend
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: redis
-    helm.sh/chart: redis-18.0.1
+    app.kubernetes.io/version: 7.2.4
+    helm.sh/chart: redis-19.0.0
   name: frontend-redis-master
   namespace: frontend
 spec:
@@ -23,13 +24,14 @@ spec:
         checksum/configmap: 86bcc953bb473748a3d3dc60b7c11f34e60c93519234d4c37f42e22ada559d47
         checksum/health: aff24913d801436ea469d8d374b2ddb3ec4c43ee7ab24663d5f8ff1a1b6991a9
         checksum/scripts: 84151e7423cc7aedc1d0d3b311b48e1cfc8e2253829e9f6485d3cce4808b4bfd
-        checksum/secret: 2014b7003b20c176535e8cc96c324cee2bb3af2dd0021c9aac53598a6c420d44
+        checksum/secret: dafd83a1bd0db5c7a871d1d3e107c2ff47a4adeb619c26d7e43928c04b07714b
       labels:
         app.kubernetes.io/component: master
         app.kubernetes.io/instance: frontend
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/name: redis
-        helm.sh/chart: redis-18.0.1
+        app.kubernetes.io/version: 7.2.4
+        helm.sh/chart: redis-19.0.0
     spec:
       affinity:
         nodeAffinity: null
@@ -44,7 +46,7 @@ spec:
                   app.kubernetes.io/name: redis
               topologyKey: kubernetes.io/hostname
             weight: 1
-      automountServiceAccountToken: true
+      automountServiceAccountToken: false
       containers:
       - args:
         - -c
@@ -67,7 +69,7 @@ spec:
           value: "no"
         - name: REDIS_PORT
           value: "6379"
-        image: docker.io/bitnami/redis:7.2.0-debian-11-r0
+        image: docker.io/bitnami/redis:7.2.4-debian-12-r9
         imagePullPolicy: IfNotPresent
         livenessProbe:
           exec:
@@ -96,14 +98,21 @@ spec:
           successThreshold: 1
           timeoutSeconds: 2
         resources:
-          limits: {}
-          requests: {}
+          limits:
+            cpu: 150m
+            ephemeral-storage: 1024Mi
+            memory: 192Mi
+          requests:
+            cpu: 100m
+            ephemeral-storage: 50Mi
+            memory: 128Mi
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
             drop:
             - ALL
-          runAsGroup: 0
+          readOnlyRootFilesystem: true
+          runAsGroup: 1001
           runAsNonRoot: true
           runAsUser: 1001
           seccompProfile:
@@ -118,13 +127,18 @@ spec:
         - mountPath: /opt/bitnami/redis/mounted-etc
           name: config
         - mountPath: /opt/bitnami/redis/etc/
-          name: redis-tmp-conf
+          name: empty-dir
+          subPath: app-conf-dir
         - mountPath: /tmp
-          name: tmp
+          name: empty-dir
+          subPath: tmp-dir
       enableServiceLinks: true
       securityContext:
         fsGroup: 1001
-      serviceAccountName: frontend-redis
+        fsGroupChangePolicy: Always
+        supplementalGroups: []
+        sysctls: []
+      serviceAccountName: frontend-redis-master
       terminationGracePeriodSeconds: 30
       volumes:
       - configMap:
@@ -139,9 +153,7 @@ spec:
           name: frontend-redis-configuration
         name: config
       - emptyDir: {}
-        name: redis-tmp-conf
-      - emptyDir: {}
-        name: tmp
+        name: empty-dir
   updateStrategy:
     type: RollingUpdate
   volumeClaimTemplates:
